@@ -90,8 +90,3 @@ All usage is disclosed in the **AI Disclosure Annexure** in `/docs`.
 ## 👤 Authors
 - **Jeron Okkers** – Varsity College Student, Contract Monthly Claim System Project  
 
----
-
-## 📜 License
-This project is for **educational purposes** only (Varsity College – PROG6212 POE).  
-Not intended for production use.  
