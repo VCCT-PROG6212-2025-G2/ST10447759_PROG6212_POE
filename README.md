@@ -22,14 +22,14 @@ A detailed video walkthrough of the application's features and functionality is 
 
 The prototype now includes the following functional features:
 
-* [cite_start]**Lecturer Claim Submission:** A user-friendly form allows lecturers to submit claims with details for hours worked, hourly rate, and any additional notes[cite: 191, 192]. The form includes robust validation to ensure data accuracy.
-* [cite_start]**Secure Document Uploads:** Lecturers can upload supporting documents for their claims[cite: 200]. [cite_start]The system validates files by type (allowing only `.pdf`, `.docx`, `.xlsx`) and size (max 10MB)[cite: 207]. [cite_start]Uploaded files are securely stored using AES encryption to protect sensitive information[cite: 204].
-* [cite_start]**Claim Status Tracking:** After submission, lecturers can track the real-time status of their claims on a dedicated "My Claims" page[cite: 212, 213]. [cite_start]The status is clearly displayed (e.g., `Pending`, `CoordinatorApproved`, `ManagerApproved`, `Rejected`)[cite: 215].
+**Lecturer Claim Submission:** A user-friendly form allows lecturers to submit claims with details for hours worked, hourly rate, and any additional notes[cite: 191, 192]. The form includes robust validation to ensure data accuracy.
+**Secure Document Uploads:** Lecturers can upload supporting documents for their claims. [cite_start]The system validates files by type (allowing only `.pdf`, `.docx`, `.xlsx`) and size (max 10MB). Uploaded files are securely stored using AES encryption to protect sensitive information.
+**Claim Status Tracking:** After submission, lecturers can track the real-time status of their claims on a dedicated "My Claims" page[cite: 212, 213]. [cite_start]The status is clearly displayed (e.g., `Pending`, `CoordinatorApproved`, `ManagerApproved`, `Rejected`).
 * **Two-Step Admin Approval Workflow:**
-    * [cite_start]**Coordinator View:** A dedicated dashboard for Programme Coordinators to review and either **verify or reject** all *newly submitted* claims[cite: 194].
-    * [cite_start]**Manager View:** A separate dashboard for Academic Managers to provide **final approval or rejection** for claims that have already been verified by a coordinator[cite: 194].
-* [cite_start]**Unit Tested Logic:** The core business logic within the data service is covered by a suite of **5+ unit tests** to ensure reliability and correctness[cite: 219, 693].
-* **Modern Sidebar UI:** The application features a professional and intuitive user interface with a vertical sidebar for easy navigation across all user roles.
+*  **Coordinator View:** A dedicated dashboard for Programme Coordinators to review and either **verify or reject** all *newly submitted* claims[cite: 194].
+*  **Manager View:** A separate dashboard for Academic Managers to provide **final approval or rejection** for claims that have already been verified by a coordinator[cite: 194].
+*  **Unit Tested Logic:** The core business logic within the data service is covered by a suite of **5+ unit tests** to ensure reliability and correctness[cite: 219, 693].
+*  **Modern Sidebar UI:** The application features a professional and intuitive user interface with a vertical sidebar for easy navigation across all user roles.
 
 ---
 
