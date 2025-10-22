@@ -6,7 +6,7 @@ The **Contract Monthly Claim System (CMCS)** is a university project designed to
 
 ## ✨ Part 2: Functional Prototype
 
-[cite_start]Building on the initial design from Part 1, this version is a fully functional web application developed with **ASP.NET Core MVC**[cite: 186]. The application brings the wireframes to life, implementing the core workflows for lecturers and administrators. [cite_start]To meet the specific requirements of this phase, the application uses **in-memory data storage** to manage claims and secures uploaded documents with **AES encryption**[cite: 666, 675].
+Building on the initial design from Part 1, this version is a fully functional web application developed with **ASP.NET Core MVC**. The application brings the wireframes to life, implementing the core workflows for lecturers and administrators. To meet the specific requirements of this phase, the application uses **in-memory data storage** to manage claims and secures uploaded documents with **AES encryption**.
 
 ---
 
@@ -14,7 +14,7 @@ The **Contract Monthly Claim System (CMCS)** is a university project designed to
 
 A detailed video walkthrough of the application's features and functionality is available on YouTube. [cite_start]The video demonstrates the complete claim submission and approval workflow. [cite: 229]
 
-**[Link to Your Unlisted YouTube Video Here]**
+**https://youtu.be/bnTNVVZUbV4**
 
 ---
 
@@ -35,11 +35,11 @@ The prototype now includes the following functional features:
 
 ## 🛠️ Tech Stack
 
--   [cite_start]**Backend:** C# 12, ASP.NET Core MVC (.NET 8) [cite: 186]
+-   **Backend:** C# 12, ASP.NET Core MVC (.NET 8) 
 -   **Frontend:** HTML5, CSS3, Bootstrap 5
--   [cite_start]**Data Management:** In-memory data storage (Static List) [cite: 666]
--   [cite_start]**Security:** AES Encryption for file storage (`System.Security.Cryptography`) [cite: 675]
--   [cite_start]**Testing:** MSTest for Unit Testing [cite: 219]
+-   ]**Data Management:** In-memory data storage (Static List) 
+-   **Security:** AES Encryption for file storage (`System.Security.Cryptography`) 
+-  **Testing:** MSTest for Unit Testing  
 -   **Version Control:** Git & GitHub
 
 ---
