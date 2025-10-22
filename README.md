@@ -68,8 +68,6 @@ For Part 2 of this project, AI assistance (Gemini by Google) was used for:
 -   Refining unit tests to cover key functionality.
 -   Drafting this `README.md` file.
 
-[cite_start]*As per the assignment instructions, full disclosure including screenshots of conversations and links will be provided in a separate document or annexure.* [cite: 101]
-
 ---
 
 ## 📌 Status
