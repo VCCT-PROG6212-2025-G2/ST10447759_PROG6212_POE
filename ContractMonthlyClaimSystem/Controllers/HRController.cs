@@ -101,5 +101,53 @@ namespace ContractMonthlyClaimSystem.Controllers
 
             return View(approvedClaims);
         }
+
+        // GET: /HR/ManageLecturers
+        [HttpGet]
+        public async Task<IActionResult> ManageLecturers()
+        {
+            // Get all users in the 'Lecturer' role
+            var lecturers = await _userManager.GetUsersInRoleAsync("Lecturer");
+            return View(lecturers);
+        }
+
+        // GET: /HR/EditLecturer/{id}
+        [HttpGet]
+        public async Task<IActionResult> EditLecturer(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+            if (user == null) return NotFound();
+
+            return View(user);
+        }
+
+        // POST: /HR/EditLecturer
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditLecturer(string id, string firstName, string lastName, string email, decimal hourlyRate)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+            if (user == null) return NotFound();
+
+            // Update fields
+            user.FirstName = firstName;
+            user.LastName = lastName;
+            user.Email = email;
+            user.UserName = email; // Keep username same as email
+            user.HourlyRate = hourlyRate;
+
+            var result = await _userManager.UpdateAsync(user);
+
+            if (result.Succeeded)
+            {
+                ViewBag.Message = "Lecturer details updated successfully!";
+                return View(user);
+            }
+
+            foreach (var error in result.Errors)
+                ModelState.AddModelError("", error.Description);
+
+            return View(user);
+        }
     }
 }
