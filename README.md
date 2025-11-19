@@ -17,6 +17,54 @@ A detailed video walkthrough of the final application features and functionality
 
 ---
 
+🔐 System Login Accounts (For Lecturer Review)
+----------------------------------------------
+
+The following test accounts were created for marking and demonstration purposes.\
+Each account has a predefined role to showcase the full workflow of the system.
+
+### **HR (Super User)**
+
+-   **Email:** `hr@cmcs.com`
+
+-   **Password:** `Hr@12345`
+
+-   **Role:** `HR`\
+    ➡ Full access to User Management, Reporting, and System Administration.
+
+* * * * *
+
+### **Lecturer (Customer)**
+
+-   **Email:** `lecturer@cmcs.com`
+
+-   **Password:** `Lecturer@123`
+
+-   **Role:** `Lecturer`\
+    ➡ Can submit monthly claims and track approval progress.
+
+* * * * *
+
+### **Coordinator**
+
+-   **Email:** `coordinator@cmcs.com`
+
+-   **Password:** `Coord@123`
+
+-   **Role:** `Coordinator`\
+    ➡ Can verify claims that are marked as *Pending*.
+
+* * * * *
+
+### **Manager**
+
+-   **Email:** `manager@cmcs.com`
+
+-   **Password:** `Manager@123`
+
+-   **Role:** `Manager`\
+    ➡ Final approval authority for verified claims.
+
 ## 🎯 Key Features Implemented
 
 ### 1. Role-Based Security & Identity
