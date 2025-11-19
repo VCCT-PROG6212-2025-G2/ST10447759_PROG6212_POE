@@ -3,6 +3,36 @@
     ViewData["Title"] = "Approved Claims Report";
 }
 
+@section Scripts {
+    <style>
+        /* Use double @@ to tell Razor this is CSS, not C# */
+        @@media print {
+            /* Hide the Sidebar */
+            .sidebar, .sidebar-header, .sidebar-footer {
+                display: none !important;
+            }
+            /* Hide the Print Button itself */
+            .btn, button {
+                display: none !important;
+            }
+            /* Expand the main content to fill the paper */
+            .main-content {
+                margin-left: 0 !important;
+                width: 100% !important;
+                padding: 0 !important;
+            }
+            /* Hide Navbar/Footer if they exist */
+            footer, header, nav {
+                display: none !important;
+            }
+
+            body {
+                background-color: white;
+            }
+        }
+    </style>
+}
+
 <div class="container">
     <h2 class="mb-4">Approved Claims Report (HR)</h2>
     <button onclick="window.print()" class="btn btn-secondary mb-3">
@@ -21,18 +51,27 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var item in Model)
+            @if (!Model.Any())
             {
                 <tr>
-                    <td>@item.Id</td>
-                    <td>@item.LecturerName</td>
-                    <td>@item.SubmissionDate.ToShortDateString()</td>
-                    <td>@item.HoursWorked</td>
-                    <td>@item.HourlyRate.ToString("C")</td>
-                    <td class="fw-bold text-success">
-                        @((Convert.ToDecimal(item.HoursWorked) * item.HourlyRate).ToString("C"))
-                    </td>
+                    <td colspan="6" class="text-center">No approved claims found.</td>
                 </tr>
+            }
+            else
+            {
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.Id</td>
+                        <td>@item.LecturerName</td>
+                        <td>@item.SubmissionDate.ToShortDateString()</td>
+                        <td>@item.HoursWorked</td>
+                        <td>@item.HourlyRate.ToString("C", new System.Globalization.CultureInfo("en-ZA"))</td>
+                        <td class="fw-bold text-success">
+                            @((Convert.ToDecimal(item.HoursWorked) * item.HourlyRate).ToString("C", new System.Globalization.CultureInfo("en-ZA")))
+                        </td>
+                    </tr>
+                }
             }
         </tbody>
     </table>

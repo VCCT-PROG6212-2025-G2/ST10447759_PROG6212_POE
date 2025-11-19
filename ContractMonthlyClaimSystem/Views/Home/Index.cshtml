@@ -3,46 +3,97 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome to the</h1>
-    <h2 class="display-5 fw-bold">Contract Monthly Claim System (CMCS)</h2>
-    <p class="lead text-muted mt-3">Your central hub for managing lecturer claims efficiently.</p>
+    <h1 class="display-4">Welcome to CMCS</h1>
+    <p class="lead text-muted mt-3">Contract Monthly Claim System</p>
 </div>
 
 <hr class="my-5" />
 
-<div class="row text-center">
-    <h4 class="mb-4">Quick Actions</h4>
+<div class="row text-center justify-content-center">
 
-    <div class="col-md-4 mb-3">
-        <div class="card h-100">
-            <div class="card-body">
-                <i class="fa-solid fa-plus-circle fa-3x text-primary mb-3"></i>
-                <h5 class="card-title">Submit a Claim</h5>
-                <p class="card-text">Create and submit a new monthly claim for your hours worked.</p>
-                <a asp-controller="Lecturer" asp-action="Create" class="btn btn-primary">Go to Form</a>
+    @* SCENARIO 1: USER IS NOT LOGGED IN *@
+    @if (!User.Identity.IsAuthenticated)
+    {
+        <div class="col-md-6">
+            <div class="card shadow-sm border-primary">
+                <div class="card-body p-5">
+                    <h2 class="card-title text-primary"><i class="fa-solid fa-lock"></i></h2>
+                    <h4 class="mt-3">Restricted Access</h4>
+                    <p class="card-text">You must log in to access the claims portal.</p>
+                    <a asp-controller="Account" asp-action="Login" class="btn btn-primary btn-lg px-5">Log In Now</a>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="col-md-4 mb-3">
-        <div class="card h-100">
-            <div class="card-body">
-                <i class="fa-solid fa-file-invoice fa-3x text-info mb-3"></i>
-                <h5 class="card-title">Track My Claims</h5>
-                <p class="card-text">View the status and history of all your submitted claims.</p>
-                <a asp-controller="Lecturer" asp-action="MyClaims" class="btn btn-info">View History</a>
-            </div>
-        </div>
-    </div>
+    }
 
-    <div class="col-md-4 mb-3">
-        <div class="card h-100 bg-light">
-            <div class="card-body">
-                <i class="fa-solid fa-user-shield fa-3x text-secondary mb-3"></i>
-                <h5 class="card-title">Admin Portals</h5>
-                <p class="card-text">Access the Coordinator and Manager dashboards to review claims.</p>
-                <a asp-controller="Coordinator" asp-action="Index" class="btn btn-secondary">Coordinator</a>
-                <a asp-controller="Manager" asp-action="Index" class="btn btn-secondary ms-2">Manager</a>
+    @* SCENARIO 2: LECTURER VIEW *@
+    @if (User.IsInRole("Lecturer"))
+    {
+        <div class="col-md-5 mb-3">
+            <div class="card h-100 border-primary">
+                <div class="card-body">
+                    <i class="fa-solid fa-plus-circle fa-3x text-primary mb-3"></i>
+                    <h5 class="card-title">Submit a Claim</h5>
+                    <p class="card-text">Create and submit a new monthly claim for your hours.</p>
+                    <a asp-controller="Lecturer" asp-action="Create" class="btn btn-primary">Submit New</a>
+                </div>
             </div>
         </div>
-    </div>
+        <div class="col-md-5 mb-3">
+            <div class="card h-100 border-info">
+                <div class="card-body">
+                    <i class="fa-solid fa-list-check fa-3x text-info mb-3"></i>
+                    <h5 class="card-title">Track Claims</h5>
+                    <p class="card-text">View the status history of your submissions.</p>
+                    <a asp-controller="Lecturer" asp-action="MyClaims" class="btn btn-info text-white">View History</a>
+                </div>
+            </div>
+        </div>
+    }
+
+    @* SCENARIO 3: COORDINATOR VIEW *@
+    @if (User.IsInRole("Coordinator"))
+    {
+        <div class="col-md-6 mb-3">
+            <div class="card h-100 border-warning">
+                <div class="card-body bg-light">
+                    <i class="fa-solid fa-user-check fa-3x text-warning mb-3"></i>
+                    <h5 class="card-title">Coordinator Dashboard</h5>
+                    <p class="card-text">You have claims waiting for verification.</p>
+                    <a asp-controller="Coordinator" asp-action="Index" class="btn btn-warning">Verify Pending Claims</a>
+                </div>
+            </div>
+        </div>
+    }
+
+    @* SCENARIO 4: MANAGER VIEW *@
+    @if (User.IsInRole("Manager"))
+    {
+        <div class="col-md-6 mb-3">
+            <div class="card h-100 border-success">
+                <div class="card-body bg-light">
+                    <i class="fa-solid fa-user-tie fa-3x text-success mb-3"></i>
+                    <h5 class="card-title">Academic Manager Dashboard</h5>
+                    <p class="card-text">Review and finalize approved claims.</p>
+                    <a asp-controller="Manager" asp-action="Index" class="btn btn-success">Approve Claims</a>
+                </div>
+            </div>
+        </div>
+    }
+
+    @* SCENARIO 5: HR VIEW *@
+    @if (User.IsInRole("HR"))
+    {
+        <div class="col-md-6 mb-3">
+            <div class="card h-100 border-danger">
+                <div class="card-body bg-light">
+                    <i class="fa-solid fa-users-gear fa-3x text-danger mb-3"></i>
+                    <h5 class="card-title">HR Administration</h5>
+                    <p class="card-text">Manage users and generate reports.</p>
+                    <a asp-controller="HR" asp-action="Index" class="btn btn-danger">Go to HR Dashboard</a>
+                </div>
+            </div>
+        </div>
+    }
+
 </div>
