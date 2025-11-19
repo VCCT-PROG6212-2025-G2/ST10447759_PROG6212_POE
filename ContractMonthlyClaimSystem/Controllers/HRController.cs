@@ -72,13 +72,27 @@ namespace ContractMonthlyClaimSystem.Controllers
             return View();
         }
 
-        // --- 2. MANAGE ALL USERS ---
+        // GET: /HR/ManageUsers
         [HttpGet]
         public async Task<IActionResult> ManageUsers()
         {
-            // Fetch ALL users from DB
             var users = await _userManager.Users.ToListAsync();
-            return View(users);
+            var model = new List<UserWithRoleViewModel>();
+
+            foreach (var user in users)
+            {
+                // Fetch the role for this specific user
+                var roles = await _userManager.GetRolesAsync(user);
+                var roleName = roles.FirstOrDefault() ?? "User"; // Default to "User" if no role
+
+                model.Add(new UserWithRoleViewModel
+                {
+                    User = user,
+                    Role = roleName
+                });
+            }
+
+            return View(model);
         }
 
         // --- 3. EDIT USER ---
