@@ -14,9 +14,20 @@
         <div class="card h-100 border-primary">
             <div class="card-body text-center">
                 <h3 class="card-title"><i class="fa-solid fa-user-plus"></i></h3>
-                <h4>Onboard Lecturer</h4>
-                <p>Create a new lecturer profile and set their hourly rate.</p>
-                <a asp-controller="HR" asp-action="AddLecturer" class="btn btn-primary">Add Lecturer</a>
+                <h4>Onboard User</h4>
+                <p>Create a new User profile</p>
+                <a asp-controller="HR" asp-action="AddUser" class="btn btn-primary">Add User</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4 mb-4">
+        <div class="card h-100 border-warning">
+            <div class="card-body text-center">
+                <h3 class="card-title"><i class="fa-solid fa-users"></i></h3>
+                <h4>Manage Users</h4>
+                <p>Update User details</p>
+                <a asp-controller="HR" asp-action="ManageUsers" class="btn btn-warning">View All Users</a>
             </div>
         </div>
     </div>

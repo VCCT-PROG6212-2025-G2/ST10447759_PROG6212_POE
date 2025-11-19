@@ -7,45 +7,43 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ContractMonthlyClaimSystem.Controllers
 {
-    [Authorize(Roles = "HR")] // Security: Only HR users can access this controller
+    [Authorize(Roles = "HR")]
     public class HRController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly CMCSContext _context;
+        private readonly RoleManager<IdentityRole> _roleManager; // Added to fetch roles
 
-        // Constructor: Inject both UserManager (for creating users) and CMCSContext (for reports)
-        public HRController(UserManager<ApplicationUser> userManager, CMCSContext context)
+        public HRController(UserManager<ApplicationUser> userManager, CMCSContext context, RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
             _context = context;
+            _roleManager = roleManager;
         }
 
-        // GET: /HR/Index
         public IActionResult Index()
         {
             return View();
         }
 
-        // GET: /HR/AddLecturer
+        // --- 1. ADD USER (ANY ROLE) ---
         [HttpGet]
-        public IActionResult AddLecturer()
+        public IActionResult AddUser()
         {
+            // We will just hardcode the roles in the View for simplicity
             return View();
         }
 
-        // POST: /HR/AddLecturer
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddLecturer(string firstName, string lastName, string email, string phoneNumber, decimal hourlyRate, string password)
+        public async Task<IActionResult> AddUser(string firstName, string lastName, string email, string phoneNumber, decimal hourlyRate, string password, string role)
         {
-            // Basic Validation
             if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
             {
                 ModelState.AddModelError("", "Email and Password are required.");
                 return View();
             }
 
-            // Create the new User object with custom fields
             var user = new ApplicationUser
             {
                 UserName = email,
@@ -53,101 +51,78 @@ namespace ContractMonthlyClaimSystem.Controllers
                 FirstName = firstName,
                 LastName = lastName,
                 PhoneNumber = phoneNumber,
-                HourlyRate = hourlyRate, // HR sets this rate here
-                EmailConfirmed = true    // Auto-confirm since an admin is creating it
+                // Only Lecturers get paid; force 0 for others to prevent errors
+                HourlyRate = (role == "Lecturer") ? hourlyRate : 0,
+                EmailConfirmed = true
             };
 
-            // 1. Create User in the Database
             var result = await _userManager.CreateAsync(user, password);
 
             if (result.Succeeded)
             {
-                // 2. Assign the "Lecturer" Role
-                await _userManager.AddToRoleAsync(user, "Lecturer");
-
-                ViewBag.Message = $"Lecturer {firstName} {lastName} added successfully!";
-
-                // Return the view to allow adding another lecturer easily
-                // (ModelState is cleared automatically on a new request, but here we just stay on the page)
-                ModelState.Clear();
+                await _userManager.AddToRoleAsync(user, role);
+                ViewBag.Message = $"{role} {firstName} {lastName} added successfully!";
                 return View();
             }
             else
             {
-                // Display errors (e.g., "Password too weak", "Email already taken")
-                foreach (var error in result.Errors)
-                {
-                    ModelState.AddModelError("", error.Description);
-                }
+                foreach (var error in result.Errors) ModelState.AddModelError("", error.Description);
             }
 
-            // If we got here, something failed, redisplay form
             return View();
         }
 
-        // GET: /HR/Reports
+        // --- 2. MANAGE ALL USERS ---
         [HttpGet]
-        public IActionResult Reports()
+        public async Task<IActionResult> ManageUsers()
         {
-            // Fetch claims that have been fully approved by the Manager
-            var approvedClaims = _context.Claims
-                .Where(c => c.Status == ClaimStatus.ManagerApproved)
-                // We don't strictly need .Include(c => c.Lecturer) if we stored LecturerName as a string in the Claim model.
-                // But if you added a navigation property, keep it. 
-                // Based on your previous Claim model, you stored 'LecturerName' directly, so .Include isn't strictly necessary 
-                // unless you added a 'public virtual ApplicationUser Lecturer { get; set; }' to your Claim model.
-                .OrderByDescending(c => c.SubmissionDate)
-                .ToList();
-
-            return View(approvedClaims);
+            // Fetch ALL users from DB
+            var users = await _userManager.Users.ToListAsync();
+            return View(users);
         }
 
-        // GET: /HR/ManageLecturers
+        // --- 3. EDIT USER ---
         [HttpGet]
-        public async Task<IActionResult> ManageLecturers()
-        {
-            // Get all users in the 'Lecturer' role
-            var lecturers = await _userManager.GetUsersInRoleAsync("Lecturer");
-            return View(lecturers);
-        }
-
-        // GET: /HR/EditLecturer/{id}
-        [HttpGet]
-        public async Task<IActionResult> EditLecturer(string id)
+        public async Task<IActionResult> EditUser(string id)
         {
             var user = await _userManager.FindByIdAsync(id);
             if (user == null) return NotFound();
-
             return View(user);
         }
 
-        // POST: /HR/EditLecturer
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditLecturer(string id, string firstName, string lastName, string email, decimal hourlyRate)
+        public async Task<IActionResult> EditUser(string id, string firstName, string lastName, string email, decimal hourlyRate)
         {
             var user = await _userManager.FindByIdAsync(id);
             if (user == null) return NotFound();
 
-            // Update fields
             user.FirstName = firstName;
             user.LastName = lastName;
             user.Email = email;
-            user.UserName = email; // Keep username same as email
+            user.UserName = email;
             user.HourlyRate = hourlyRate;
 
             var result = await _userManager.UpdateAsync(user);
 
             if (result.Succeeded)
             {
-                ViewBag.Message = "Lecturer details updated successfully!";
+                ViewBag.Message = "User details updated successfully!";
                 return View(user);
             }
 
-            foreach (var error in result.Errors)
-                ModelState.AddModelError("", error.Description);
-
+            foreach (var error in result.Errors) ModelState.AddModelError("", error.Description);
             return View(user);
+        }
+
+        // --- 4. REPORTS ---
+        [HttpGet]
+        public IActionResult Reports()
+        {
+            var approvedClaims = _context.Claims
+                .Where(c => c.Status == ClaimStatus.ManagerApproved)
+                .ToList();
+            return View(approvedClaims);
         }
     }
 }

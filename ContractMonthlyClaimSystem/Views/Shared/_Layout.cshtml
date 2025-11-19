@@ -37,13 +37,17 @@
                         </a>
                     </li>
                 }
-
                 @* HR LINKS *@
                 @if (User.IsInRole("HR"))
                 {
                     <li class="nav-item">
-                        <a class="nav-link" asp-controller="HR" asp-action="AddLecturer">
-                            <i class="fa-solid fa-user-plus"></i> Add Lecturer
+                        <a class="nav-link" asp-controller="HR" asp-action="AddUser">
+                            <i class="fa-solid fa-user-plus"></i> Add User
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="HR" asp-action="ManageUsers">
+                            <i class="fa-solid fa-users"></i> Manage Users
                         </a>
                     </li>
                     <li class="nav-item">
