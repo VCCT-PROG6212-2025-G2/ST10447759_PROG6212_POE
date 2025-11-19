@@ -27,7 +27,7 @@ Each account has a predefined role to showcase the full workflow of the system.
 
 -   **Email:** `hr@cmcs.com`
 
--   **Password:** `Hr@12345`
+-   **Password:** `Password@123`
 
 -   **Role:** `HR`\
     ➡ Full access to User Management, Reporting, and System Administration.
@@ -36,9 +36,9 @@ Each account has a predefined role to showcase the full workflow of the system.
 
 ### **Lecturer (Customer)**
 
--   **Email:** `lecturer@cmcs.com`
+-   **Email:** `MPrinsloo@gmail.com`
 
--   **Password:** `Lecturer@123`
+-   **Password:** `Mathew123*`
 
 -   **Role:** `Lecturer`\
     ➡ Can submit monthly claims and track approval progress.
@@ -49,7 +49,7 @@ Each account has a predefined role to showcase the full workflow of the system.
 
 -   **Email:** `coordinator@cmcs.com`
 
--   **Password:** `Coord@123`
+-   **Password:** `Password@123`
 
 -   **Role:** `Coordinator`\
     ➡ Can verify claims that are marked as *Pending*.
@@ -60,7 +60,7 @@ Each account has a predefined role to showcase the full workflow of the system.
 
 -   **Email:** `manager@cmcs.com`
 
--   **Password:** `Manager@123`
+-   **Password:** `Password@123`
 
 -   **Role:** `Manager`\
     ➡ Final approval authority for verified claims.
