@@ -9,10 +9,12 @@ namespace ContractMonthlyClaimSystem.Controllers
     {
         private readonly InMemoryClaimService _claimService;
 
+
         public CoordinatorController(InMemoryClaimService claimService)
         {
             _claimService = claimService;
         }
+
 
         // GET: /Coordinator
         public IActionResult Index()
@@ -51,5 +53,6 @@ namespace ContractMonthlyClaimSystem.Controllers
             }
             return RedirectToAction(nameof(Index));
         }
+
     }
 }

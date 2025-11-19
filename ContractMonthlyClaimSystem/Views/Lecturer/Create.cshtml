@@ -1,58 +1,89 @@
-﻿@* In Views/Lecturer/Create.cshtml *@
-@model ContractMonthlyClaimSystem.Models.ClaimViewModel
+﻿@model ContractMonthlyClaimSystem.Models.ClaimViewModel
 
 @{
-    ViewData["Title"] = "Submit a New Claim";
+    ViewData["Title"] = "Submit Monthly Claim";
 }
 
-<div class="row">
-    <div class="col-md-8 mx-auto">
-        <h2 class="text-center">@ViewData["Title"]</h2>
-        <hr />
-
-        <form asp-action="Create" method="post" enctype="multipart/form-data">
-            @* This is important for security *@
-            @Html.AntiForgeryToken()
-
-            @* Displays a summary of all validation errors *@
-            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
-
-            <div class="row">
-                <div class="col-md-6 mb-3">
-                    <label asp-for="HoursWorked" class="form-label"></label>
-                    <input asp-for="HoursWorked" class="form-control" placeholder="e.g., 40" />
-                    <span asp-validation-for="HoursWorked" class="text-danger"></span>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">@ViewData["Title"]</h4>
                 </div>
-                <div class="col-md-6 mb-3">
-                    <label asp-for="HourlyRate" class="form-label">Hourly Rate (ZAR)</label>
-                    <input asp-for="HourlyRate" class="form-control" placeholder="e.g., 850" />
-                    <span asp-validation-for="HourlyRate" class="text-danger"></span>
+                <div class="card-body">
+                    <form asp-action="Create" method="post" enctype="multipart/form-data">
+                        @Html.AntiForgeryToken()
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Hourly Rate (ZAR)</label>
+                                <input type="number" class="form-control bg-light"
+                                       value="@ViewBag.HourlyRate"
+                                       readonly id="hourlyRate" />
+                                <small class="text-muted">Your rate is set by HR and cannot be changed.</small>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label asp-for="HoursWorked" class="form-label">Hours Worked</label>
+                                <input asp-for="HoursWorked" class="form-control" id="hoursWorked" placeholder="e.g. 40" />
+                                <span asp-validation-for="HoursWorked" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Estimated Total Payout</label>
+                            <input type="text" class="form-control fw-bold text-success"
+                                   id="totalAmount" readonly value="R 0.00" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Notes" class="form-label">Additional Notes</label>
+                            <textarea asp-for="Notes" class="form-control" rows="3" placeholder="Description of work performed..."></textarea>
+                            <span asp-validation-for="Notes" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-4">
+                            <label asp-for="SupportingDocument" class="form-label">Supporting Document</label>
+                            <input asp-for="SupportingDocument" type="file" class="form-control" />
+                            <div class="form-text">Allowed: .pdf, .docx, .xlsx (Max 10 MB)</div>
+                            <span asp-validation-for="SupportingDocument" class="text-danger"></span>
+                        </div>
+
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary btn-lg">Submit Claim</button>
+                        </div>
+                    </form>
                 </div>
             </div>
-
-            <div class="mb-3">
-                <label asp-for="Notes" class="form-label"></label>
-                <textarea asp-for="Notes" class="form-control" rows="4" placeholder="Add any additional notes..."></textarea>
-                <span asp-validation-for="Notes" class="text-danger"></span>
-            </div>
-
-            <div class="mb-4">
-                <label asp-for="SupportingDocument" class="form-label">Supporting Documents</label>
-                <input asp-for="SupportingDocument" type="file" class="form-control" />
-                <div class="form-text">PDF, DOCX, XLSX up to 10 MB</div>
-                <span asp-validation-for="SupportingDocument" class="text-danger"></span>
-            </div>
-
-            <div class="d-grid">
-                <button type="submit" class="btn btn-primary btn-lg">Submit Claim</button>
-            </div>
-        </form>
+        </div>
     </div>
 </div>
 
-@* This section enables client-side validation *@
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+
+    <script>
+        $(document).ready(function () {
+            // AUTOMATION: Client-side calculation
+            function calculateTotal() {
+                var hours = parseFloat($("#hoursWorked").val());
+                var rate = parseFloat($("#hourlyRate").val());
+
+                if (!isNaN(hours) && !isNaN(rate)) {
+                    var total = hours * rate;
+                    // Format as Currency (ZAR)
+                    $("#totalAmount").val("R " + total.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'));
+                } else {
+                    $("#totalAmount").val("R 0.00");
+                }
+            }
+
+            // Trigger calculation when hours input changes
+            $("#hoursWorked").on("input", calculateTotal);
+        });
+    </script>
 }

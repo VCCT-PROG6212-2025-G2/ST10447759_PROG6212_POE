@@ -1,0 +1,37 @@
+﻿@{
+    ViewData["Title"] = "Log In";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-4">
+        <h2 class="text-center mb-4">@ViewData["Title"]</h2>
+        <section>
+            <form method="post" asp-action="Login">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <div asp-validation-summary="All" class="text-danger"></div>
+
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email Address</label>
+                            <input name="email" type="email" class="form-control" required />
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Password</label>
+                            <input name="password" type="password" class="form-control" required />
+                        </div>
+
+                        <div class="mb-3 form-check">
+                            <input name="rememberMe" type="checkbox" class="form-check-input" value="true" />
+                            <label class="form-check-label">Remember me</label>
+                        </div>
+
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary">Log In</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </section>
+    </div>
+</div>

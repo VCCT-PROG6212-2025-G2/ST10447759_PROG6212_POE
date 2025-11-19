@@ -1,41 +1,58 @@
+using ContractMonthlyClaimSystem.Data;
+using ContractMonthlyClaimSystem.Models;
 using ContractMonthlyClaimSystem.Services;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
-namespace ContractMonthlyClaimSystem
+var builder = WebApplication.CreateBuilder(args);
+
+// 1. DB Connection
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+builder.Services.AddDbContext<CMCSContext>(options =>
+    options.UseSqlServer(connectionString));
+
+// 2. Identity (Login/Roles)
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+    .AddEntityFrameworkStores<CMCSContext>()
+    .AddDefaultTokenProviders();
+
+// 3. Sessions (Requirement)
+builder.Services.AddSession();
+
+builder.Services.AddControllersWithViews();
+builder.Services.AddSingleton<FileEncryptionService>();
+// Remove InMemoryClaimService, we use DB now
+
+var app = builder.Build();
+
+// 4. Initialize DB and Create Roles (HR, Lecturer, etc.)
+using (var scope = app.Services.CreateScope())
 {
-    public class Program
-    {
-        public static void Main(string[] args)
-        {
-            var builder = WebApplication.CreateBuilder(args);
+    var services = scope.ServiceProvider;
+    var context = services.GetRequiredService<CMCSContext>();
+    // context.Database.EnsureCreated(); // Use Migrations preferably, but this works for prototypes
 
-            // Add services to the container.
-            builder.Services.AddControllersWithViews();
-            builder.Services.AddSingleton<InMemoryClaimService>(); // Add this line
-            builder.Services.AddSingleton<FileEncryptionService>(); // Add this line
-            builder.Services.AddSingleton<IWebHostEnvironment>(builder.Environment); // Add this line
-
-            var app = builder.Build();
-
-            // Configure the HTTP request pipeline.
-            if (!app.Environment.IsDevelopment())
-            {
-                app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
-            }
-
-            app.UseHttpsRedirection();
-            app.UseStaticFiles();
-
-            app.UseRouting();
-
-            app.UseAuthorization();
-
-            app.MapControllerRoute(
-                name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
-
-            app.Run();
-        }
-    }
+    // Call a seeder method here to create roles if they don't exist (Code provided below)
+    await DbSeeder.SeedRolesAndAdminAsync(services);
 }
+
+if (!app.Environment.IsDevelopment())
+{
+    app.UseExceptionHandler("/Home/Error");
+    app.UseHsts();
+}
+
+app.UseHttpsRedirection();
+app.UseStaticFiles();
+
+app.UseRouting();
+
+app.UseAuthentication(); // Check who they are
+app.UseAuthorization();  // Check what they can do
+app.UseSession();        // Enable sessions
+
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Account}/{action=Login}/{id?}"); // Change default to Login
+
+app.Run();
