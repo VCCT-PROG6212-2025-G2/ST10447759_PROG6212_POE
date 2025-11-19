@@ -1,8 +1,48 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Dashboard";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-4">Welcome to the</h1>
+    <h2 class="display-5 fw-bold">Contract Monthly Claim System (CMCS)</h2>
+    <p class="lead text-muted mt-3">Your central hub for managing lecturer claims efficiently.</p>
+</div>
+
+<hr class="my-5" />
+
+<div class="row text-center">
+    <h4 class="mb-4">Quick Actions</h4>
+
+    <div class="col-md-4 mb-3">
+        <div class="card h-100">
+            <div class="card-body">
+                <i class="fa-solid fa-plus-circle fa-3x text-primary mb-3"></i>
+                <h5 class="card-title">Submit a Claim</h5>
+                <p class="card-text">Create and submit a new monthly claim for your hours worked.</p>
+                <a asp-controller="Lecturer" asp-action="Create" class="btn btn-primary">Go to Form</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-3">
+        <div class="card h-100">
+            <div class="card-body">
+                <i class="fa-solid fa-file-invoice fa-3x text-info mb-3"></i>
+                <h5 class="card-title">Track My Claims</h5>
+                <p class="card-text">View the status and history of all your submitted claims.</p>
+                <a asp-controller="Lecturer" asp-action="MyClaims" class="btn btn-info">View History</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4 mb-3">
+        <div class="card h-100 bg-light">
+            <div class="card-body">
+                <i class="fa-solid fa-user-shield fa-3x text-secondary mb-3"></i>
+                <h5 class="card-title">Admin Portals</h5>
+                <p class="card-text">Access the Coordinator and Manager dashboards to review claims.</p>
+                <a asp-controller="Coordinator" asp-action="Index" class="btn btn-secondary">Coordinator</a>
+                <a asp-controller="Manager" asp-action="Index" class="btn btn-secondary ms-2">Manager</a>
+            </div>
+        </div>
+    </div>
 </div>

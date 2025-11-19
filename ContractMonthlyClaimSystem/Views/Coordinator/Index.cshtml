@@ -1,0 +1,51 @@
+﻿@* In Views/Coordinator/Index.cshtml *@
+@model IEnumerable<ContractMonthlyClaimSystem.Models.Claim>
+
+@{
+    ViewData["Title"] = "Coordinator Dashboard - Pending Approvals";
+}
+
+<h2 class="text-center">Pending Coordinator Approvals</h2>
+<hr />
+
+@if (!Model.Any())
+{
+    <p class="text-center">There are no pending claims to review.</p>
+}
+else
+{
+    <table class="table table-hover align-middle">
+        <thead>
+            <tr>
+                <th>Lecturer</th>
+                <th>Claim Date</th>
+                <th>Amount (ZAR)</th>
+                <th class="text-center">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var claim in Model)
+            {
+                <tr>
+                    <td>@claim.LecturerName</td>
+                    <td>@claim.SubmissionDate.ToShortDateString()</td>
+                    <td>@claim.TotalAmount.ToString("N2")</td>
+                    <td class="text-center">
+                        <div class="btn-group" role="group">
+                            <form asp-action="Verify" method="post" class="d-inline">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="id" value="@claim.Id" />
+                                <button type="submit" class="btn btn-success">Verify</button>
+                            </form>
+                            <form asp-action="Reject" method="post" class="d-inline ms-2">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="id" value="@claim.Id" />
+                                <button type="submit" class="btn btn-danger">Reject</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

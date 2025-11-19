@@ -1,0 +1,66 @@
+﻿@* In Views/Lecturer/MyClaims.cshtml *@
+@model IEnumerable<ContractMonthlyClaimSystem.Models.Claim>
+
+@{
+    ViewData["Title"] = "My Claim History";
+}
+
+<h2 class="text-center">@ViewData["Title"]</h2>
+<p class="text-center text-muted">Here you can track the status of all your submitted claims.</p>
+<hr />
+
+@if (!Model.Any())
+{
+    <p class="text-center">You have not submitted any claims yet.</p>
+}
+else
+{
+    <table class="table table-bordered table-striped">
+        <thead class="table-dark">
+            <tr>
+                <th>Claim ID</th>
+                <th>Submission Date</th>
+                <th>Total Amount (ZAR)</th>
+                <th>Status</th>
+                <th>Supporting Document</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var claim in Model)
+            {
+                <tr>
+                    <td>#@claim.Id.ToString("D5")</td>
+                    <td>@claim.SubmissionDate.ToString("yyyy-MM-dd")</td>
+                    <td>@claim.TotalAmount.ToString("C", new System.Globalization.CultureInfo("en-ZA"))</td>
+                    <td>
+                        @{
+                            var statusClass = claim.Status switch
+                            {
+                                ContractMonthlyClaimSystem.Models.ClaimStatus.Pending => "bg-primary",
+                                ContractMonthlyClaimSystem.Models.ClaimStatus.CoordinatorApproved => "bg-info text-dark",
+                                ContractMonthlyClaimSystem.Models.ClaimStatus.ManagerApproved => "bg-success",
+                                ContractMonthlyClaimSystem.Models.ClaimStatus.Rejected => "bg-danger",
+                                _ => "bg-secondary"
+                            };
+                        }
+                        <span class="badge @statusClass">@claim.Status</span>
+                    </td>
+                    <td>
+                        @if (!string.IsNullOrEmpty(claim.DocumentFileName))
+                        {
+                            @claim.DocumentFileName
+                        }
+                        else
+                        {
+                            <span>No document</span>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+<div class="mt-4 d-grid gap-2 col-6 mx-auto">
+    <a class="btn btn-primary" asp-controller="Lecturer" asp-action="Create">Submit Another Claim</a>
+</div>

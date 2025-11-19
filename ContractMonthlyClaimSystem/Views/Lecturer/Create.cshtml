@@ -1,0 +1,58 @@
+﻿@* In Views/Lecturer/Create.cshtml *@
+@model ContractMonthlyClaimSystem.Models.ClaimViewModel
+
+@{
+    ViewData["Title"] = "Submit a New Claim";
+}
+
+<div class="row">
+    <div class="col-md-8 mx-auto">
+        <h2 class="text-center">@ViewData["Title"]</h2>
+        <hr />
+
+        <form asp-action="Create" method="post" enctype="multipart/form-data">
+            @* This is important for security *@
+            @Html.AntiForgeryToken()
+
+            @* Displays a summary of all validation errors *@
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label asp-for="HoursWorked" class="form-label"></label>
+                    <input asp-for="HoursWorked" class="form-control" placeholder="e.g., 40" />
+                    <span asp-validation-for="HoursWorked" class="text-danger"></span>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label asp-for="HourlyRate" class="form-label">Hourly Rate (ZAR)</label>
+                    <input asp-for="HourlyRate" class="form-control" placeholder="e.g., 850" />
+                    <span asp-validation-for="HourlyRate" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Notes" class="form-label"></label>
+                <textarea asp-for="Notes" class="form-control" rows="4" placeholder="Add any additional notes..."></textarea>
+                <span asp-validation-for="Notes" class="text-danger"></span>
+            </div>
+
+            <div class="mb-4">
+                <label asp-for="SupportingDocument" class="form-label">Supporting Documents</label>
+                <input asp-for="SupportingDocument" type="file" class="form-control" />
+                <div class="form-text">PDF, DOCX, XLSX up to 10 MB</div>
+                <span asp-validation-for="SupportingDocument" class="text-danger"></span>
+            </div>
+
+            <div class="d-grid">
+                <button type="submit" class="btn btn-primary btn-lg">Submit Claim</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@* This section enables client-side validation *@
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

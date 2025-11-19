@@ -11,6 +11,8 @@ namespace ContractMonthlyClaimSystem
             // Add services to the container.
             builder.Services.AddControllersWithViews();
             builder.Services.AddSingleton<InMemoryClaimService>(); // Add this line
+            builder.Services.AddSingleton<FileEncryptionService>(); // Add this line
+            builder.Services.AddSingleton<IWebHostEnvironment>(builder.Environment); // Add this line
 
             var app = builder.Build();
 

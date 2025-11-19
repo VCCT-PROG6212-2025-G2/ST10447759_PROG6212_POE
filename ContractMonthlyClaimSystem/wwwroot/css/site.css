@@ -16,7 +16,64 @@ html {
   position: relative;
   min-height: 100%;
 }
-
+/* === Custom Sidebar Styles === */
 body {
-  margin-bottom: 60px;
+    display: flex;
+}
+
+.sidebar {
+    width: 260px;
+    min-height: 100vh;
+
+    background-color: #f8f9fa;
+    border-right: 1px solid #dee2e6;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    position: fixed; /* Fix the sidebar to the left */
+    top: 0;
+    left: 0;
+}
+
+.sidebar-header {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 2rem;
+    color: #0d6efd; /* A nice blue color */
+}
+
+.sidebar-nav .nav-link {
+    color: #495057;
+    font-size: 1.1rem;
+    margin-bottom: 0.75rem;
+    border-radius: 0.25rem;
+    display: flex;
+    align-items: center;
+}
+
+    .sidebar-nav .nav-link i {
+        margin-right: 12px;
+        width: 20px; /* Aligns the text */
+    }
+
+    .sidebar-nav .nav-link:hover, .sidebar-nav .nav-link.active {
+        background-color: #e9ecef;
+        color: #0d6efd;
+    }
+
+.sidebar-footer {
+    margin-top: auto; /* Pushes the footer to the bottom */
+}
+
+
+.main-content {
+    margin-left: 260px; /* The width of the sidebar */
+    padding: 30px;
+    width: calc(100% - 260px); /* Fill the remaining space */
+}
+
+/* Override default container padding from bootstrap */
+.container {
+    padding-left: 0;
+    padding-right: 0;
 }
