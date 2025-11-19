@@ -101,6 +101,11 @@ namespace ContractMonthlyClaimSystem.Controllers
         {
             var user = await _userManager.FindByIdAsync(id);
             if (user == null) return NotFound();
+
+            // RULE: Check if they are a lecturer to decide if the input should be enabled
+            var isLecturer = await _userManager.IsInRoleAsync(user, "Lecturer");
+            ViewBag.IsLecturer = isLecturer;
+
             return View(user);
         }
 
@@ -115,17 +120,34 @@ namespace ContractMonthlyClaimSystem.Controllers
             user.LastName = lastName;
             user.Email = email;
             user.UserName = email;
-            user.HourlyRate = hourlyRate;
+
+            // BACKEND VALIDATION RULE: 
+            // Only Lecturers can have an Hourly Rate. 
+            // If they are a Coordinator, Manager, or HR, force it to 0.
+            if (await _userManager.IsInRoleAsync(user, "Lecturer"))
+            {
+                user.HourlyRate = hourlyRate;
+            }
+            else
+            {
+                user.HourlyRate = 0;
+            }
 
             var result = await _userManager.UpdateAsync(user);
 
             if (result.Succeeded)
             {
                 ViewBag.Message = "User details updated successfully!";
+
+                // Reset the flag for the view
+                ViewBag.IsLecturer = await _userManager.IsInRoleAsync(user, "Lecturer");
                 return View(user);
             }
 
             foreach (var error in result.Errors) ModelState.AddModelError("", error.Description);
+
+            // Reset the flag for the view in case of error
+            ViewBag.IsLecturer = await _userManager.IsInRoleAsync(user, "Lecturer");
             return View(user);
         }
 

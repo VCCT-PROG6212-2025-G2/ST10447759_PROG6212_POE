@@ -1,6 +1,7 @@
 ﻿@model ContractMonthlyClaimSystem.Models.ApplicationUser
 @{
     ViewData["Title"] = "Edit User";
+    bool isLecturer = ViewBag.IsLecturer == true;
 }
 
 <div class="container col-md-6">
@@ -34,8 +35,20 @@
                     <label class="form-label">Hourly Rate (ZAR)</label>
                     <input name="hourlyRate"
                            value="@Model.HourlyRate.ToString("F2").Replace(",", ".")"
-                           type="number" step="0.01" class="form-control" required />
-                    <small class="text-muted">Set to 0 for Coordinators, Managers, or HR.</small>
+                           type="number" step="0.01" class="form-control" required
+                           @(isLecturer ? "" : "readonly")
+                           style="@(isLecturer ? "" : "background-color: #e9ecef; cursor: not-allowed;")" />
+
+                    @if (!isLecturer)
+                    {
+                        <small class="text-danger">
+                            <i class="fa-solid fa-lock"></i> Rate editing is disabled for Admins/Coordinators.
+                        </small>
+                    }
+                    else
+                    {
+                        <small class="text-muted">Set the approved hourly rate for this lecturer.</small>
+                    }
                 </div>
 
                 <button type="submit" class="btn btn-success w-100">Save Changes</button>
