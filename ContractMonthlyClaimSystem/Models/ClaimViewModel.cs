@@ -1,22 +1,20 @@
-﻿// In Models/ClaimViewModel.cs
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace ContractMonthlyClaimSystem.Models
 {
     public class ClaimViewModel
     {
         [Required(ErrorMessage = "Hours Worked is required.")]
-        [Range(1, 100, ErrorMessage = "Hours must be between 1 and 100.")]
+        // Update range to 200 so it doesn't block the 180 limit check in the controller
+        [Range(1, 200, ErrorMessage = "Hours must be between 1 and 200.")]
         public double HoursWorked { get; set; }
 
-        [Required(ErrorMessage = "Hourly Rate is required.")]
-        [Range(1, 2000, ErrorMessage = "Hourly rate must be between 1 and 2000.")]
+        // We will handle the "Required" check for this in the Controller manually now
         public decimal HourlyRate { get; set; }
 
         [MaxLength(500, ErrorMessage = "Notes cannot exceed 500 characters.")]
         public string? Notes { get; set; }
 
-        // This property will hold the uploaded file from the form
         public IFormFile? SupportingDocument { get; set; }
     }
 }

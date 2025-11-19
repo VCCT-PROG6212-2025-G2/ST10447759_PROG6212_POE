@@ -16,14 +16,69 @@
                 <i class="fa-solid fa-university"></i> CMCS
             </div>
             <ul class="nav flex-column sidebar-nav">
+                @* Common Dashboard Link *@
                 <li class="nav-item">
-                    <a class="nav-link" asp-controller="Home" asp-action="Index"><i class="fa-solid fa-house"></i> Dashboard</a>
+                    <a class="nav-link" asp-controller="Home" asp-action="Index">
+                        <i class="fa-solid fa-house"></i> Dashboard
+                    </a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" asp-controller="Lecturer" asp-action="MyClaims"><i class="fa-solid fa-file-invoice"></i> My Claims</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" asp-controller="Lecturer" asp-action="Create"><i class="fa-solid fa-plus-circle"></i> Submit New Claim</a>
+
+                @* LECTURER LINKS *@
+                @if (User.IsInRole("Lecturer"))
+                {
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Lecturer" asp-action="Create">
+                            <i class="fa-solid fa-plus-circle"></i> Submit Claim
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Lecturer" asp-action="MyClaims">
+                            <i class="fa-solid fa-file-invoice"></i> My Claims
+                        </a>
+                    </li>
+                }
+
+                @* HR LINKS *@
+                @if (User.IsInRole("HR"))
+                {
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="HR" asp-action="AddLecturer">
+                            <i class="fa-solid fa-user-plus"></i> Add Lecturer
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="HR" asp-action="Reports">
+                            <i class="fa-solid fa-file-pdf"></i> Reports
+                        </a>
+                    </li>
+                }
+
+                @* ADMIN LINKS *@
+                @if (User.IsInRole("Coordinator"))
+                {
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Coordinator" asp-action="Index">
+                            <i class="fa-solid fa-user-check"></i> Verify Claims
+                        </a>
+                    </li>
+                }
+
+                @if (User.IsInRole("Manager"))
+                {
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Manager" asp-action="Index">
+                            <i class="fa-solid fa-user-tie"></i> Approve Claims
+                        </a>
+                    </li>
+                }
+
+                @* LOGIN/LOGOUT *@
+                <li class="nav-item mt-4">
+                    <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline">
+                        <button type="submit" class="btn btn-link nav-link text-danger">
+                            <i class="fa-solid fa-sign-out-alt"></i> Logout
+                        </button>
+                    </form>
                 </li>
             </ul>
 

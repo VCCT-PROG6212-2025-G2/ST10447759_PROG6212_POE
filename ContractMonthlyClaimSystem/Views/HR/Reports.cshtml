@@ -1,0 +1,39 @@
+﻿@model IEnumerable<ContractMonthlyClaimSystem.Models.Claim>
+@{
+    ViewData["Title"] = "Approved Claims Report";
+}
+
+<div class="container">
+    <h2 class="mb-4">Approved Claims Report (HR)</h2>
+    <button onclick="window.print()" class="btn btn-secondary mb-3">
+        <i class="fa-solid fa-print"></i> Print / Save as PDF
+    </button>
+
+    <table class="table table-bordered">
+        <thead class="table-dark">
+            <tr>
+                <th>Claim ID</th>
+                <th>Lecturer</th>
+                <th>Date Submitted</th>
+                <th>Hours</th>
+                <th>Rate</th>
+                <th>Total Payout</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Id</td>
+                    <td>@item.LecturerName</td>
+                    <td>@item.SubmissionDate.ToShortDateString()</td>
+                    <td>@item.HoursWorked</td>
+                    <td>@item.HourlyRate.ToString("C")</td>
+                    <td class="fw-bold text-success">
+                        @((Convert.ToDecimal(item.HoursWorked) * item.HourlyRate).ToString("C"))
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

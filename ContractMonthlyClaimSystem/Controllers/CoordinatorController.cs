@@ -1,58 +1,54 @@
-﻿// In Controllers/CoordinatorController.cs
-using ContractMonthlyClaimSystem.Services;
+﻿using ContractMonthlyClaimSystem.Data;
+using ContractMonthlyClaimSystem.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Reflection;
+using Microsoft.EntityFrameworkCore;
 
 namespace ContractMonthlyClaimSystem.Controllers
 {
+    [Authorize(Roles = "Coordinator")]
     public class CoordinatorController : Controller
     {
-        private readonly InMemoryClaimService _claimService;
+        private readonly CMCSContext _context;
 
-
-        public CoordinatorController(InMemoryClaimService claimService)
+        public CoordinatorController(CMCSContext context)
         {
-            _claimService = claimService;
+            _context = context;
         }
 
-
-        // GET: /Coordinator
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            // Coordinator only sees claims that are pending initial review.
-            var pendingClaims = _claimService.GetAllClaims()
-                .Where(c => c.Status == Models.ClaimStatus.Pending)
-                .ToList();
-            return View(pendingClaims);
+            // Fetch claims from DB where status is Pending
+            var claims = await _context.Claims
+                .Where(c => c.Status == ClaimStatus.Pending)
+                .ToListAsync();
+            return View(claims);
         }
 
-        // POST: /Coordinator/Verify
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Verify(int id)
+        public async Task<IActionResult> Verify(int id)
         {
-            var claim = _claimService.GetClaimById(id);
+            var claim = await _context.Claims.FindAsync(id);
             if (claim != null)
             {
-                claim.Status = Models.ClaimStatus.CoordinatorApproved;
-                _claimService.UpdateClaim(claim);
+                claim.Status = ClaimStatus.CoordinatorApproved;
+                await _context.SaveChangesAsync();
             }
             return RedirectToAction(nameof(Index));
         }
 
-        // POST: /Coordinator/Reject
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Reject(int id)
+        public async Task<IActionResult> Reject(int id)
         {
-            var claim = _claimService.GetClaimById(id);
+            var claim = await _context.Claims.FindAsync(id);
             if (claim != null)
             {
-                claim.Status = Models.ClaimStatus.Rejected;
-                _claimService.UpdateClaim(claim);
+                claim.Status = ClaimStatus.Rejected;
+                await _context.SaveChangesAsync();
             }
             return RedirectToAction(nameof(Index));
         }
-
     }
 }

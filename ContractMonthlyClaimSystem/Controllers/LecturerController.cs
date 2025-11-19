@@ -55,6 +55,11 @@ namespace ContractMonthlyClaimSystem.Controllers
             // We do NOT trust the form input for money calculations.
             decimal officialRate = user.HourlyRate;
 
+            // 2. VALIDATION FIX: 
+            // The form doesn't send HourlyRate anymore (because it's auto-filled/readonly).
+            // We remove it from validation so ModelState.IsValid doesn't fail.
+            ModelState.Remove("HourlyRate");
+
             // 2. VALIDATION: Check Business Logic (Max 180 hours)
             if (model.HoursWorked > 180)
             {

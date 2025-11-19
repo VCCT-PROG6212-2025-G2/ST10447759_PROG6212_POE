@@ -10,48 +10,56 @@ namespace ContractMonthlyClaimSystem.Data
     {
         public static async Task SeedRolesAndAdminAsync(IServiceProvider service)
         {
-            // Get the required services
             var userManager = service.GetService<UserManager<ApplicationUser>>();
             var roleManager = service.GetService<RoleManager<IdentityRole>>();
 
-            // 1. Create Roles if they don't exist
+            // 1. Create Roles
             await CreateRoleAsync(roleManager, "HR");
             await CreateRoleAsync(roleManager, "Lecturer");
             await CreateRoleAsync(roleManager, "Coordinator");
             await CreateRoleAsync(roleManager, "Manager");
 
-            // 2. Create the Admin HR User (since there is no register page)
-            var adminEmail = "hr@cmcs.com";
-            var adminUser = await userManager.FindByEmailAsync(adminEmail);
+            // 2. Create HR Admin
+            await CreateUserAsync(userManager, "hr@cmcs.com", "System", "Admin", "HR");
 
-            if (adminUser == null)
-            {
-                var newAdmin = new ApplicationUser
-                {
-                    UserName = adminEmail,
-                    Email = adminEmail,
-                    FirstName = "System",
-                    LastName = "Admin",
-                    EmailConfirmed = true,
-                    HourlyRate = 0 // HR doesn't claim hours
-                };
+            // 3. Create Programme Coordinator (NEW)
+            await CreateUserAsync(userManager, "coordinator@cmcs.com", "Sarah", "Coordinator", "Coordinator");
 
-                // Create user with a default password
-                var result = await userManager.CreateAsync(newAdmin, "Password@123");
-
-                if (result.Succeeded)
-                {
-                    // Assign the HR role to this user
-                    await userManager.AddToRoleAsync(newAdmin, "HR");
-                }
-            }
+            // 4. Create Academic Manager (NEW)
+            await CreateUserAsync(userManager, "manager@cmcs.com", "Mike", "Manager", "Manager");
         }
 
+        // Helper method to create roles safely
         private static async Task CreateRoleAsync(RoleManager<IdentityRole> roleManager, string roleName)
         {
             if (!await roleManager.RoleExistsAsync(roleName))
             {
                 await roleManager.CreateAsync(new IdentityRole(roleName));
+            }
+        }
+
+        // Helper method to create users safely
+        private static async Task CreateUserAsync(UserManager<ApplicationUser> userManager, string email, string fName, string lName, string role)
+        {
+            var user = await userManager.FindByEmailAsync(email);
+            if (user == null)
+            {
+                var newUser = new ApplicationUser
+                {
+                    UserName = email,
+                    Email = email,
+                    FirstName = fName,
+                    LastName = lName,
+                    EmailConfirmed = true,
+                    HourlyRate = 0 // Admins don't claim hours
+                };
+
+                var result = await userManager.CreateAsync(newUser, "Password@123");
+
+                if (result.Succeeded)
+                {
+                    await userManager.AddToRoleAsync(newUser, role);
+                }
             }
         }
     }
