@@ -37,6 +37,7 @@
                         </a>
                     </li>
                 }
+
                 @* HR LINKS *@
                 @if (User.IsInRole("HR"))
                 {
@@ -99,19 +100,6 @@
                     }
                 </li>
             </ul>
-
-            <hr />
-            <h6 class="text-muted small">Admin Views</h6>
-
-            <ul class="nav flex-column sidebar-nav">
-                <li class="nav-item">
-                    <a class="nav-link" asp-controller="Coordinator" asp-action="Index"><i class="fa-solid fa-user-check"></i> Coordinator</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" asp-controller="Manager" asp-action="Index"><i class="fa-solid fa-user-tie"></i> Manager</a>
-                </li>
-            </ul>
-
         </div>
         <div class="sidebar-footer">
         </div>
@@ -121,6 +109,13 @@
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
+
+        @* NEW FOOTER *@
+        <footer class="border-top footer text-muted mt-5 pt-3 text-center">
+            <div class="container">
+                &copy; @DateTime.Now.Year - <strong>CMCS v3.0 (Final)</strong> - <a asp-controller="Home" asp-action="Privacy">Privacy</a>
+            </div>
+        </footer>
     </div>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
