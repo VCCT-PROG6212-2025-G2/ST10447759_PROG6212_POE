@@ -118,13 +118,29 @@ Each account has a predefined role to showcase the full workflow of the system.
 
 ---
 
-## 🤖 AI Usage
+## 🤖 AI Assistance Overview
 
 For Part 3 of this project, AI assistance was used for:
 -   Configuring the `DbSeeder` to create default Admin/HR accounts.
 -   Writing the jQuery script for the client-side "Total Payout" calculation.
 -   Designing the CSS `@media print` query for the PDF reporting feature.
 -   Troubleshooting Entity Framework relationship errors.
+
+AI was used as a support tool during the development of the Contract Monthly Claim System (CMCS). It helped me with:
+
+-   Debugging errors and fixing issues in controllers, Identity setup, and Entity Framework.
+
+-   Improving code structure and ensuring proper use of MVC and dependency injection.
+
+-   Generating small code snippets for role seeding, validation rules, and jQuery auto-calculation.
+
+-   Enhancing documentation and helping structure my README and presentation.
+
+-   Clarifying best practices for security, automation, and database integration.
+
+AI assisted me in understanding concepts and improving implementation, but **all final coding, integration, testing, and design decisions were done by me**
+
+Chatgpt link- https://chatgpt.com/s/t_691f74b19c18819194d6850ceb1bd7f7
 
 ---
 
