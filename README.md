@@ -13,7 +13,7 @@ Moving beyond the prototype phase, Part 3 transforms the system into a robust, d
 ## 🎥 YouTube Demonstration
 
 A detailed video walkthrough of the final application features and functionality is available on YouTube.
-**[LINK TO YOUR VIDEO HERE]**
+**https://youtu.be/BacAL49ETaE**
 
 ---
 
