@@ -22,6 +22,7 @@ namespace ContractMonthlyClaimSystem.Controllers
             var claims = await _context.Claims
                 .Where(c => c.Status == ClaimStatus.CoordinatorApproved)
                 .ToListAsync();
+
             return View(claims);
         }
 
@@ -30,11 +31,13 @@ namespace ContractMonthlyClaimSystem.Controllers
         public async Task<IActionResult> Approve(int id)
         {
             var claim = await _context.Claims.FindAsync(id);
+
             if (claim != null)
             {
                 claim.Status = ClaimStatus.ManagerApproved;
                 await _context.SaveChangesAsync();
             }
+
             return RedirectToAction(nameof(Index));
         }
 
@@ -43,11 +46,13 @@ namespace ContractMonthlyClaimSystem.Controllers
         public async Task<IActionResult> Reject(int id)
         {
             var claim = await _context.Claims.FindAsync(id);
+
             if (claim != null)
             {
                 claim.Status = ClaimStatus.Rejected;
                 await _context.SaveChangesAsync();
             }
+
             return RedirectToAction(nameof(Index));
         }
     }
