@@ -96,6 +96,11 @@ namespace ContractMonthlyClaimSystem.Controllers
         }
 
         // --- 3. EDIT USER ---
+        /// <summary>
+        /// Updates user details. Enforces security rule: Only Lecturers can have an Hourly Rate.
+        /// Admins (HR/Manager) are forced to 0 to prevent payroll errors.
+        /// </summary>
+        /// <param name="id">User ID</param>
         [HttpGet]
         public async Task<IActionResult> EditUser(string id)
         {
